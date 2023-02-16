@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>IIRIS UTM Conversion Tracker</title>
+	<style>
+		header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 10px;
+			background-color: #f2f2f2;
+			border-bottom: 1px solid #ccc;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+		}
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			max-width: 500px;
+			margin: 20px auto 0;
+			padding: 20px;
+			background-color: #f2f2f2;
+			border-radius: 4px;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+			font-size: 16px;
+		}
+		form > * {
+			margin-bottom: 10px;
+		}
+		label {
+			display: block;
+			font-weight: bold;
+		}
+		input[type="text"] {
+			padding: 8px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			width: 100%;
+			max-width: 500px;
+			font-size: 16px;
+		}
+		button[type="button"] {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 16px;
+			margin-right: 10px;
+		}
+		button[type="button"]:hover {
+			background-color: #45a049;
+		}
+		#revenue-input {
+			display: none;
+		}
+		.radio-group {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+		.radio-group label {
+			margin-right: 10px;
+			margin-bottom: 0;
+		}
+		#button-group {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+	</style>
+	<script>
+		function generateUTM() {
+			var source = document.getElementById("utm_source").value;
+			var medium = document.getElementById("utm_medium").value;
+			var campaign = document.getElementById("utm_campaign").value;
+			var term = document.getElementById("utm_term").value;
+			var content = document.getElementById("utm_content").value;
+			var revenue = document.getElementById("revenue-input").value;
+			var utm_url = "https://www.example.com/?utm_source=" + encodeURIComponent(source) + "&utm_medium=" + encodeURIComponent(medium) + "&utm_campaign=" + encodeURIComponent(campaign) + "&utm_term=" + encodeURIComponent(term) + "&utm_content=" + encodeURIComponent(content) + (revenue ? "&utm_revenue=" + encodeURIComponent(revenue) : "");
+			document.getElementById("utm-url").innerHTML = utm_url;
+		}
+
+		function copyUTM() {
+			var utm_url = document.getElementById("utm-url").innerHTML;
+			if (utm_url) {
+				navigator.clipboard.writeText(utm_url).then(function() {
+					alert("UTM URL copied to clipboard!");
+				}, function() {
+					alert("Failed to copy UTM URL to clipboard.");
+				});
+			}
+		}
+		function toggleRevenueInput() {
+			var revenue_input = document.getElementById("revenue-input");
+			var revenue_label = document.getElementById("revenue-label");
+			var revenue_question_yes = document.getElementById("revenue_question_yes");
+
+			if (revenue_question_yes.checked) {
+				revenue_input.style.display = "block";
+				revenue_label.style.display = "block";
+			} else {
+				revenue_input.style.display = "none";
+				revenue_label.style.display = "none";
+			}
+		}
+	</script>
+</head>
+<body>
+	<header>
+		<h1>IIRIS UTM Conversion Tracker</h1>
+		<img src="https://c.smartrecruiters.com/sr-careersite-image-prod-dc5/5fca061d7fbc6f17687690b2/21d92860-c207-46ca-92b6-be143918c010?r=s3-eu-central-1" alt="IIRIS logo" width="240" 
+     height="125" >
+	</header>
+	<form>
+		<label for="utm_source">Source:</label>
+		<input type="text" id="utm_source" name="utm_source" placeholder="(e.g. google, newsletter)">
+
+		<label for="utm_medium">Medium:</label>
+		<input type="text" id="utm_medium" name="utm_medium" placeholder="(e.g. cpc, banner, email)">
+		
+		<label for="utm_campaign">Campaign:</label>
+		<input type="text" id="utm_campaign" name="utm_campaign" placeholder="(e.g. summer_sale, 10p_off)">
+		
+		<label for="utm_term">Term:</label>
+		<input type="text" id="utm_term" name="utm_term" placeholder="(e.g. running+shoes)">
+		
+		<label for="utm_content">Content:</label>
+		<input type="text" id="utm_content" name="utm_content" placeholder="(e.g. logo_link, image_link)">
+
+		<div class="radio-group">
+			<label for="revenue_question">Is revenue directly attributable to this conversion?</label>
+			<div>
+				<label><input type="radio" id="revenue_question_yes" name="revenue_question" value="yes" onclick="toggleRevenueInput()"> Yes</label>
+				<label><input type="radio" id="revenue_question_no" name="revenue_question" value="no" onclick="toggleRevenueInput()"> No</label>
+			</div>
+		</div>
+
+		<label for="revenue-input" id="revenue-label" style="display: none;">Revenue:</label>
+		<input type="text" id="revenue-input" name="revenue" style="display: none;">
+
+		<div id="button-group">
+			<button type="button" onclick="generateUTM()">Generate UTM</button>
+			<button type="button" onclick="copyUTM()">Copy UTM</button>
+		</div>
+
+		<div id="utm-url"></div>
+	</form>
+</body>
+</html>
+        
